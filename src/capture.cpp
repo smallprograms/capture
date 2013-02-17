@@ -1,6 +1,3 @@
-#include <cstdlib>   // for rand()
-#include <cctype>    // for isalnum()   
-#include <algorithm> // for back_inserter
 #include <sstream>
 #include <pcl/io/openni_grabber.h>
 #include <pcl/io/pcd_io.h>
@@ -15,22 +12,6 @@
 using namespace std;
             
         
-char rand_alnum()
-{
-    char c;
-    while (!std::isalnum(c = static_cast<char>(std::rand())))
-        ;
-    return c;
-}
-
-
-std::string rand_alnum_str (std::string::size_type sz)
-{
-    std::string s;
-    s.reserve  (sz);
-    generate_n (std::back_inserter(s), sz, rand_alnum);
-    return s;
-}
 
 class SimpleOpenNIProcessor
 {
