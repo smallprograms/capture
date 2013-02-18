@@ -40,11 +40,11 @@ void SimpleOpenNIProcessor::cbPointCloud(const pcl::PointCloud<pcl::PointXYZRGBA
     pcl::PassThrough<pcl::PointXYZRGBA> filter;
     filter.setInputCloud(cloud.makeShared());
     filter.setFilterFieldName("z");
-    //0 to 1 m
-    filter.setFilterLimits(0,1);
+    //0 to 2 m
+    filter.setFilterLimits(0,2);
     filter.filter(*fCloud);
-
-    if( fCloud->size() > 10) {
+    const int MIN_POINTS = 5000;
+    if( fCloud->size() > MIN_POINTS) {
         //show and save 
         viewer->showCloud(fCloud);
         count++;
