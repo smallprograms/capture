@@ -62,8 +62,8 @@ void SimpleOpenNIProcessor::cbPointCloud(const pcl::PointCloud<pcl::PointXYZRGBA
     filter.setKeepOrganized(true);
     filter.setInputCloud(cloud_in);
     filter.setFilterFieldName("z");
-    //0 to 1 m
-    filter.setFilterLimits(0,1);
+    //0 to 3 m
+    filter.setFilterLimits(0,3);
     filter.filter(*fCloud);
     const int MIN_POINTS = 5000;
     if( fCloud->size() > MIN_POINTS) {
@@ -87,11 +87,11 @@ void SimpleOpenNIProcessor::saveImageToFile(const std::string name, const cv::Ma
 }
 
 void SimpleOpenNIProcessor::cbImage(const boost::shared_ptr<openni_wrapper::Image>& im) {
-    static int j=0;
-    std::stringstream name;
-    name << "pcd/cap" << j << ".jpg";
-    threadVec.push_back( QtConcurrent::run(this,&SimpleOpenNIProcessor::saveImageToFile, name.str(), getFrame(im)));
-    j++;
+//    static int j=0;
+//    std::stringstream name;
+//    name << "pcd/cap" << j << ".jpg";
+//    threadVec.push_back( QtConcurrent::run(this,&SimpleOpenNIProcessor::saveImageToFile, name.str(), getFrame(im)));
+//    j++;
 }
 
 cv::Mat SimpleOpenNIProcessor::getFrame (const boost::shared_ptr<openni_wrapper::Image> &img) {
@@ -129,10 +129,10 @@ int main(int argc, char** argv)
     boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> pcbPointCloud =
         boost::bind (&SimpleOpenNIProcessor::cbPointCloud, &processor, _1);
 
-    boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&)> pcbImage =
-        boost::bind (&SimpleOpenNIProcessor::cbImage, &processor, _1);
+//    boost::function<void (const boost::shared_ptr<openni_wrapper::Image>&)> pcbImage =
+//        boost::bind (&SimpleOpenNIProcessor::cbImage, &processor, _1);
     grabber->registerCallback(pcbPointCloud);
-    grabber->registerCallback(pcbImage);
+//    grabber->registerCallback(pcbImage);
 
     grabber->start();
     while(true && !quit);
